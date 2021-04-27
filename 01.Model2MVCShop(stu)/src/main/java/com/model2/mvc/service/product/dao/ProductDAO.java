@@ -30,7 +30,7 @@ public class ProductDAO {
 	
 		stmt.executeUpdate();
 		
-		System.out.println("insert :"+stmt+"¿Ï·á");
+		System.out.println("insert :"+stmt+"ï¿½Ï·ï¿½");
 		System.out.println(con);
 		
 		con.close();
@@ -94,7 +94,7 @@ public class ProductDAO {
 
 		rs.last();
 		int total = rs.getRow();
-		System.out.println("·Î¿ìÀÇ ¼ö:" + total);
+		System.out.println("ProductDAOì˜ total:" + total);
 
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("count", new Integer(total));
@@ -129,7 +129,7 @@ public class ProductDAO {
 	public void updateProduct(ProductVO productVO) throws Exception {
 		
 		Connection con = DBUtil.getConnection();
-		System.out.println("Ä¿³İ¤µ¤µ°Å³ª³ª³ª³ª");
+		System.out.println("ProductDAOì—ì„œ updateProduct ì‹œì‘ : "+con);
 		String sql = "update PRODUCT set PROD_NAME=?,PROD_DETAIL=?,MANUFACTURE_DAY=?,PRICE=?,IMAGE_FILE=? where PROD_NO=?";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
@@ -140,7 +140,7 @@ public class ProductDAO {
 		stmt.setString(5, productVO.getFileName());
 		stmt.setInt(6, productVO.getProdNo());
 		stmt.executeUpdate();
-		System.out.println("¾÷µ¥ÀÌÆ®½ÇÇà¿Ï·á");
+		System.out.println("updateProduct ì™„ë£Œ");
 		con.close();
 	}
 	

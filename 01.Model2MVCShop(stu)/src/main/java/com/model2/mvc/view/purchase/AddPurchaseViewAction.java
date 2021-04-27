@@ -7,26 +7,30 @@ import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.product.impl.ProductServiceImpl;
 import com.model2.mvc.service.product.vo.ProductVO;
-import com.model2.mvc.service.purchase.PurchaseService;
-import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
-import com.model2.mvc.service.purchase.vo.PurchaseVO;
+
 
 
 
 public class AddPurchaseViewAction extends Action{
 
+	public AddPurchaseViewAction() {
+		
+		
+	}
+	
 	@Override
 	public String execute(	HttpServletRequest request,
 												HttpServletResponse response) throws Exception {
 		
-		int tranNo=Integer.parseInt(request.getParameter("tranNo"));
-		System.out.println(tranNo);
+		int prodNo=Integer.parseInt(request.getParameter("prodNo"));
+		System.out.println("AddPurchaseViewAction.java에서 prodNo"+prodNo);
 		
-		PurchaseService service=new PurchaseServiceImpl();
-		PurchaseVO purchaseVO=service.getPurchase(tranNo);
-		System.out.println(purchaseVO);
+		ProductService service = new ProductServiceImpl();
+		ProductVO product = service.getProduct(prodNo);
+		System.out.println("product는"+product);
 		
-		request.setAttribute("PurchaseVO", purchaseVO);
+		
+		request.setAttribute("product", product);
 		
 		return "forward:/purchase/addPurchaseView.jsp";
 	}

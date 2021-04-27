@@ -18,7 +18,7 @@ public class GetProductAction extends Action{
 												HttpServletResponse response) throws Exception {
 		int prodNo =Integer.parseInt(request.getParameter("prodNo"));
 		
-		System.out.println("∏ﬁº≠µÂΩ√¿€");
+		System.out.println("GetProductActionÏóêÏÑú prodNo : "+prodNo);
 		//HttpSession session=request.getSession();
 		//session.invalidate();
 		

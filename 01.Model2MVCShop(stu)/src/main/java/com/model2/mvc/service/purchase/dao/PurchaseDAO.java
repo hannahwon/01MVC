@@ -10,6 +10,7 @@ import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.common.util.DBUtil;
 import com.model2.mvc.service.product.vo.ProductVO;
 import com.model2.mvc.service.purchase.vo.PurchaseVO;
+import com.model2.mvc.service.user.vo.UserVO;
 
 public class PurchaseDAO {
 
@@ -20,57 +21,87 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "INSERT INTO TRANSACION VALUES(seq_transaction_tran_no.nextval,seq_product_prod_no,seq_transaction_tran_buyer_id,?,?,?,?,?,SYSDATE,?)";
-				
+		String sql = "INSERT INTO TRANSACTION VALUES (seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,SYSDATE,?)";
+		System.out.println("sqlÏùÄ"+sql);
+		
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, purchaseVO.getPaymentOption());
-		stmt.setString(2, purchaseVO.getReceiverPhone());
-		stmt.setString(3, purchaseVO.getDivyAddr());
-		stmt.setString(4, purchaseVO.getDivyRequest());
-		stmt.setString(5, purchaseVO.getTranCode());
-		stmt.setString(6, purchaseVO.getDivyDate());
+		System.out.println("stmtÏùÄ"+stmt);
+		
+		stmt.setInt(1, purchaseVO.getPurchaseProd().getProdNo());
+		stmt.setString(2, purchaseVO.getBuyer().getUserId());
+		stmt.setString(3, purchaseVO.getPaymentOption());
+		stmt.setString(4, purchaseVO.getReceiverName());
+		stmt.setString(5, purchaseVO.getReceiverPhone());
+		stmt.setString(6, purchaseVO.getDivyAddr());
+		stmt.setString(7, purchaseVO.getDivyRequest());
+		stmt.setString(8, purchaseVO.getTranCode());
+		stmt.setString(9, purchaseVO.getDivyDate().replaceAll("-", ""));
 	
 		stmt.executeUpdate();
 		
-		System.out.println("insert :"+stmt+"øœ∑·");
 		System.out.println(con);
 		
+		stmt.close();
 		con.close();
 		
+		System.out.println("PurchaseDAO ÏóêÏÑú insert ÏôÑÎ£å");
 	}
 	
-	public PurchaseVO findPurchase(PurchaseVO purchaseVO) throws Exception {
+	public PurchaseVO findPurchase(int tranNo) throws Exception {
 		
 		Connection con = DBUtil.getConnection();
 		
 		String sql = "SELECT * FROM TRANSACTION WHERE TRAN_NO =?";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
-		//stmt.setInt(1, purchaseVO);
+		stmt.setInt(1, tranNo);
 		
 		ResultSet rs = stmt.executeQuery();
 		
+		UserVO userVO = new UserVO();
+		ProductVO productVO = new ProductVO();
+		PurchaseVO purchaseVO = new PurchaseVO();
 		
-	/*	
-		PurchaseVO purchaseVO = null;
 		while(rs.next()) {
-			purchaseVO = new PurchaseVO();
-			purchaseVO.setTranCode(rs.getInt("tran_no"));
-			purchaseVO.setProdName(rs.getInt("prod_no"));
-			userVO.setBuyer(rs.getString("buyer_id"));
-			purchaseVO.setManuDate(rs.getString("payment_option"));
-			purchaseVO.setPrice(rs.getString("receiver_name"));
-			purchaseVO.setFileName(rs.getString("receiver_phone"));
-			purchaseVO.setRegDate(rs.getString("demailaddr"));
-			purchaseVO.setRegDate(rs.getString("dlvy_request"));
-			purchaseVO.setRegDate(rs.getString("tran_status_code"));
-			purchaseVO.setRegDate(rs.getDate("order_data"));
-			purchaseVO.setRegDate(rs.getDate("dlvy_date"));
+			//Ïª¨ÎüºÎ™ÖÏúºÎ°ú Ï∞æÍ∏∞ FIND
+			
+			userVO.setUserId(rs.getString("USER_ID"));
+			userVO.setUserName(rs.getString("USER_NAME"));
+			userVO.setAddr(rs.getString("ADDR"));
+			userVO.setEmail(rs.getString("EMAIL"));
+			userVO.setPassword(rs.getString("PASSWORD"));
+			userVO.setPhone(rs.getString("CELL_PHONE"));
+			userVO.setRegDate(rs.getDate("REG_DATE"));
+			userVO.setRole(rs.getString("ROLE"));
+			userVO.setSsn(rs.getString("SSN"));
+			purchaseVO.setBuyer(userVO);
+			
+			productVO.setProdNo(rs.getInt("PROD_NO"));
+			productVO.setProdName(rs.getString("PROD_NAME"));
+			productVO.setProdDetail(rs.getString("PROD_DETAIL"));
+			productVO.setPrice(rs.getInt("PRICE"));
+			productVO.setFileName(rs.getString("IMAGE_FILE"));
+			productVO.setRegDate(rs.getDate("REG_DATE"));
+			productVO.setManuDate(rs.getString("MANUFACTURE_DAY"));
+			purchaseVO.setPurchaseProd(productVO);
 			
 			
-		}*/
+			purchaseVO.setTranNo(rs.getInt("TRAN_NO"));
+			purchaseVO.setPaymentOption(rs.getString("PAYMENT_OPTION"));
+			purchaseVO.setReceiverName(rs.getString("RECEIVER_NAME"));
+			purchaseVO.setReceiverPhone(rs.getString("RECEIVER_PHONE"));
+			purchaseVO.setDivyAddr(rs.getString("DLVY_ADDR"));
+			purchaseVO.setDivyRequest(rs.getString("DLVY_REQUEST"));
+			purchaseVO.setTranCode(rs.getString("TRAN_STATUS_CODE"));
+			purchaseVO.setOrderDate(rs.getDate("ORDER_DATA"));
+			purchaseVO.setDivyDate(rs.getString("DLVY_DATE"));
+			
+			
+		}
+		stmt.close();
 		con.close();
 		
+		System.out.println("findPurchase ÏôÑÎ£å");
 		return purchaseVO;
 		
 	}
@@ -102,7 +133,7 @@ public class PurchaseDAO {
 
 		rs.last();
 		int total = rs.getRow();
-		System.out.println("∑ŒøÏ¿« ºˆ:" + total);
+		System.out.println("PurchaseDAOÏóêÏÑú total : " + total);
 
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("count", new Integer(total));
@@ -137,18 +168,20 @@ public class PurchaseDAO {
 	public void updatePurcahse(PurchaseVO purchaseVO) throws Exception {
 		
 		Connection con = DBUtil.getConnection();
-		System.out.println("purchase connection øœ∑·");
-		String sql = "update PRODUCT set PROD_NAME=?,PROD_DETAIL=?,MANUFACTURE_DAY=?,PRICE=?,IMAGE_FILE=? where PROD_NO=?";
+		System.out.println("purchase connection ÏôÑÎ£å"+con);
+		String sql = "update TRANSACTION set PROD_NAME=?,PROD_DETAIL=?,MANUFACTURE_DAY=?,PRICE=?,IMAGE_FILE=? where PROD_NO=?";
+		System.out.println("sql update sqlÏùÄ"+sql);
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, purchaseVO.getProdName());
-		stmt.setString(2, purchaseVO.getProdDetail());
-		stmt.setString(3, purchaseVO.getManuDate().replaceAll("-", ""));
-		stmt.setInt(4, purchaseVO.getPrice());
-		stmt.setString(5, purchaseVO.getFileName());
-		stmt.setInt(6, purchaseVO.getProdNo());
+		stmt.setString(1, purchaseVO.getBuyer().getUserId());
+		stmt.setString(3, purchaseVO.getPaymentOption());
+		stmt.setString(4, purchaseVO.getReceiverName());
+		stmt.setString(5, purchaseVO.getReceiverPhone());
+		stmt.setString(6, purchaseVO.getDivyAddr());
+		stmt.setString(7, purchaseVO.getDivyRequest());
+		stmt.setString(8, purchaseVO.getDivyDate().replaceAll("-", ""));
 		stmt.executeUpdate();
-		System.out.println("æ˜µ•¿Ã∆ÆΩ««‡øœ∑·");
+		System.out.println("purchase ÏóÖÎç∞Ïù¥Ìä∏ Ïã§ÌñâÏôÑÎ£å");
 		con.close();
 	}
 	
