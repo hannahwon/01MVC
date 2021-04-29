@@ -28,7 +28,7 @@ String pageUnit=getServletContext().getInitParameter("pageSize");
 searchVO.setPageUnit(Integer.parseInt(pageUnit));
 
 PurchaseService service=new PurchaseServiceImpl();
-HashMap<String,Object> map=service.getPurchaseList(searchVO);
+HashMap<String,Object> map=service.getPurchaseList(searchVO, "buyerId");
 
 request.setAttribute("map", map);
 request.setAttribute("searchVO", searchVO);

@@ -10,6 +10,8 @@ import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.common.util.DBUtil;
 import com.model2.mvc.service.product.vo.ProductVO;
 import com.model2.mvc.service.purchase.vo.PurchaseVO;
+import com.model2.mvc.service.user.UserService;
+import com.model2.mvc.service.user.impl.UserServiceImpl;
 import com.model2.mvc.service.user.vo.UserVO;
 
 public class PurchaseDAO {
@@ -21,7 +23,7 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "INSERT INTO TRANSACTION VALUES (seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,SYSDATE,?)";
+		String sql = "INSERT INTO transaction VALUES (seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,SYSDATE,?)";
 		System.out.println("sql은"+sql);
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
@@ -36,6 +38,7 @@ public class PurchaseDAO {
 		stmt.setString(7, purchaseVO.getDivyRequest());
 		stmt.setString(8, purchaseVO.getTranCode());
 		stmt.setString(9, purchaseVO.getDivyDate().replaceAll("-", ""));
+		
 	
 		stmt.executeUpdate();
 		
@@ -51,7 +54,11 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "SELECT * FROM TRANSACTION WHERE TRAN_NO =?";
+		String sql = "SELECT * FROM transaction t, product p, users u"
+					+" WHERE t.prod_no = p.prod_no"
+					+" AND t.buyer_id = u.user_id"
+					+" AND t.tran_no = ? "
+					+" ORDER BY tran_no";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setInt(1, tranNo);
@@ -107,12 +114,18 @@ public class PurchaseDAO {
 	}
 		
 	
-	public HashMap<String,Object> getPurcahse(SearchVO searchVO) throws Exception {
+	public HashMap<String,Object> getPurcahseList(SearchVO searchVO, String buyerId) throws Exception {
 		
+		System.out.println("PurchaseDAO에서 getPurchaseList 호출 : "+buyerId);
 		Connection con = DBUtil.getConnection();
+		String sql = "SELECT"
+					+" tran_no, buyer_id, receiver_name, receiver_phone, tran_status_code"
+					+" FROM transaction"
+					+" WHERE buyer_id = ?";
+
+		System.out.println("PurchaseDAO에서 getPurchaseList의 sql은"+sql);
 		
-		String sql = "SELECT * FROM TRANSACTION";
-		if (searchVO.getSearchCondition() != null) {
+		/*if (searchVO.getSearchCondition() != null) {
 			if(searchVO.getSearchCondition().equals("0")) {
 				sql += " WHERE TRAN_NO LIKE '%"+ searchVO.getSearchKeyword()+ "%'";
 			} else if(searchVO.getSearchCondition().equals("1")) {
@@ -124,16 +137,21 @@ public class PurchaseDAO {
 			}
 		}
 		sql += " order by TRAN_NO";
-
+		 */
+		
 		PreparedStatement stmt = 
 			con.prepareStatement(	sql,
-														ResultSet.TYPE_SCROLL_INSENSITIVE,
-														ResultSet.CONCUR_UPDATABLE);
+										ResultSet.TYPE_SCROLL_INSENSITIVE,
+												ResultSet.CONCUR_UPDATABLE);
+		
+		stmt.setString(1, buyerId);
+		System.out.println("sql"+sql);
 		ResultSet rs = stmt.executeQuery();
 
 		rs.last();
+			
 		int total = rs.getRow();
-		System.out.println("PurchaseDAO에서 total : " + total);
+		System.out.println("PurchaseDAO에서 total 로우의 수 : " + total);
 
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("count", new Integer(total));
@@ -141,27 +159,35 @@ public class PurchaseDAO {
 		rs.absolute(searchVO.getPage() * searchVO.getPageUnit() - searchVO.getPageUnit()+1);
 		System.out.println("searchVO.getPage():" + searchVO.getPage());
 		System.out.println("searchVO.getPageUnit():" + searchVO.getPageUnit());
-
-		ArrayList<ProductVO> list = new ArrayList<ProductVO>();
+		
+		PurchaseVO purchaseVO = null;
+		UserService service = new UserServiceImpl();
+		ArrayList<PurchaseVO> list = new ArrayList<PurchaseVO>();
+		
 		if (total > 0) {
 			for (int i = 0; i < searchVO.getPageUnit(); i++) {
-				ProductVO vo = new ProductVO();
-				vo.setProdNo(rs.getInt("PROD_NO"));
-				vo.setProdName(rs.getString("PROD_NAME"));
-				vo.setRegDate(rs.getDate("REG_DATE"));
-				vo.setPrice(rs.getInt("PRICE"));
+				purchaseVO = new PurchaseVO();
+				purchaseVO.setTranNo(rs.getInt("TRAN_NO"));
+				purchaseVO.setBuyer(service.getUser("BUYER_ID"));
+				purchaseVO.setReceiverName(rs.getString("RECEIVER_NAME"));
+				purchaseVO.setReceiverPhone(rs.getString("RECEIVER_PHONE"));
+				purchaseVO.setTranCode(rs.getString("TRAN_STATUS_CODE"));
+			
 
-				list.add(vo);
-				if (!rs.next())
+				list.add(purchaseVO);
+				
+				if (!rs.next()) {
 					break;
+				}
 			}
 		}
+		stmt.close();
+		con.close();
 		System.out.println("list.size() : "+ list.size());
 		map.put("list", list);
 		System.out.println("map().size() : "+ map.size());
+		System.out.println("list : "+map.get("list"));
 
-		con.close();
-			
 		return map;
 	}
 	
@@ -169,7 +195,7 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 		System.out.println("purchase connection 완료"+con);
-		String sql = "update TRANSACTION set PROD_NAME=?,PROD_DETAIL=?,MANUFACTURE_DAY=?,PRICE=?,IMAGE_FILE=? where PROD_NO=?";
+		String sql = "UPDATE transaction SET prod_name=?,prod_detail=?,manufacture_day=?,price=?,image_file=? WHERE prod_no=?";
 		System.out.println("sql update sql은"+sql);
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
@@ -182,6 +208,8 @@ public class PurchaseDAO {
 		stmt.setString(8, purchaseVO.getDivyDate().replaceAll("-", ""));
 		stmt.executeUpdate();
 		System.out.println("purchase 업데이트 실행완료");
+		
+		stmt.close();
 		con.close();
 	}
 	
