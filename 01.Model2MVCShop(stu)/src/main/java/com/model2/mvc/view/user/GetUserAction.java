@@ -17,9 +17,9 @@ public class GetUserAction extends Action{
 		String userId=request.getParameter("userId");
 		
 		UserService service=new UserServiceImpl();
-		UserVO vo=service.getUser(userId);
+		UserVO dbVO=service.getUser(userId);
 		
-		request.setAttribute("vo", vo);
+		request.setAttribute("vo", dbVO);
 
 		return "forward:/user/readUser.jsp";
 	}

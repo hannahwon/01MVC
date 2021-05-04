@@ -24,34 +24,41 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 
 	@Override
-	public PurchaseVO getPurchase(int purchaseVO) throws Exception {
+	public PurchaseVO getPurchase(int tranNo) throws Exception {
 		
-		return null;
+		return dao.findPurchase(tranNo);
+	}
+	
+	@Override
+	public PurchaseVO getPurchase2(int prodNo) throws Exception {
+		
+		return dao.findPurchase2(prodNo);
 	}
 
 	@Override
 	public HashMap<String, Object> getPurchaseList(SearchVO searchVO, String buyerId) throws Exception {
 		
-		return null;
+		return dao.getPurchaseList(searchVO, buyerId);
 	}
 
 	@Override
 	public HashMap<String, Object> getSaleList(SearchVO searchVO) throws Exception {
 		
-		return null;
+		return dao.getSaleList(searchVO);
 	}
 
 
 	@Override
-	public void updatePurcahse(PurchaseVO purchaseVO) throws Exception {
-				
+	public void updatePurchase(PurchaseVO purchaseVO) throws Exception {
+		
+		dao.updatePurchase(purchaseVO);	
 	}
 
 
 	@Override
 	public void updateTranCode(PurchaseVO purchaseVO) throws Exception {
 		
-
+		dao.updateTranCode(purchaseVO);
 	}
 	
 

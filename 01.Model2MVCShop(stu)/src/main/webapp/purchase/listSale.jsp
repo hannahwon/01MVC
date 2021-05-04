@@ -29,19 +29,19 @@
 %>
 
 
-
+<!DOCTYPE html>
 <html>
 <head>
-<title>상품 목록조회</title>
+<title>상품 관리</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-
+<!--
 function fncGetProductList(){
 	document.detailForm.submit();
 }
-
+-->
 </script>
 </head>
 
@@ -49,7 +49,7 @@ function fncGetProductList(){
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" action="/listProduct.do?menu=search" method="post">
+<form name="detailForm" method="post" action="/listSale.do?menu=manage">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -60,13 +60,9 @@ function fncGetProductList(){
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="93%" class="ct_ttl01">
-					
-							
-							<%if(request.getParameter("menu").equals("manage")) { %>
+				
 							상품 관리
-							<% }else{ %>
-							상품 검색
-							<%} %>							
+									
 					</td>
 				</tr>
 			</table>
@@ -80,51 +76,19 @@ function fncGetProductList(){
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
-	<%
-		if(searchVO.getSearchCondition() != null) {
-	%>
+	
 		<td align="right">
 			<select name="searchCondition" value="<%=searchCondition %>" class="ct_input_g" style="width:80px">
-		<%
-				if(searchVO.getSearchCondition().equals("0")){
-		%>
-				<option value="0" selected>상품번호</option>
+		
+				<option value="0" >상품번호</option>
 				<option value="1">상품명</option>
-				<option value="2">상품가격</option>
-		<%
-				}else if(searchVO.getSearchCondition().equals("1")){
-		%>
-				<option value="0">상품번호</option>
-				<option value="1" selected>상품명</option>
 				<option value="2">상품가격</option>
 		
-		<%
-				}else if(searchVO.getSearchCondition().equals("2")){
-		%>
-				<option value="0">상품번호</option>
-				<option value="1">상품명</option>
-				<option value="2" selected>상품가격</option>
-		<%
-				}
-		%>
 			</select>
-			<input 	type="text" name="searchKeyword"  value="<%=searchKeyword %>" 
+			<input 	type="text" name="searchKeyword" 
 							class="ct_input_g" style="width:200px; height:19px" >
 		</td>
-	<%
-		}else {
-	%>
-		<td align="right">
-			<select name="searchCondition" value="<%=searchCondition %>" class="ct_input_g" style="width:80px">
-				<option value="0">상품번호</option>
-				<option value="1">상품명</option>
-				<option value="2">상품가격</option>
-			</select>
-			<input type="text" name="searchKeyword" class="ct_input_g" style="width:200px; height:19px" >
-		</td>
-	<%
-		}
-	%>
+	
 		<td align="right" width="70">
 			<table border="0" cellspacing="0" cellpadding="0">
 				<tr>
@@ -162,7 +126,7 @@ function fncGetProductList(){
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
 	<% 	
-		int no=list.size();
+		int no = list.size();
 		for(int i=0; i<list.size(); i++) {
 			ProductVO vo = (ProductVO)list.get(i);
 	%>
@@ -177,14 +141,27 @@ function fncGetProductList(){
 		<td align="left"><%=vo.getRegDate() %></td>
 		<td></td>
 		<td align="left">
-			판매중
-			
+		
+		<% if(vo.getProTranCode()== null) { %>
+			판매중 
+		<% } else if(vo.getProTranCode().trim().equals("1")){ %>
+			구매완료
+			<a href="/updateTranCodeByProd.do?prodNo=<%=vo.getProdNo() %>&tranCode=2&page=<%=searchVO.getPage()%>">배송하기</a>
+		<% } else if(vo.getProTranCode().trim().equals("2")){%>
+			배송중
+		<% } else if(vo.getProTranCode().trim().equals("3")){%>		
+			배송완료
+		<% } %>
 		</td>	
 	</tr>
 	<%
 		}
 	%>
+	<tr>
+		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
+	</tr>	
 	
+</table>	
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
@@ -192,11 +169,12 @@ function fncGetProductList(){
 		<%
 			for(int i=1;i<=totalPage;i++){
 		%>
-			<a href="/listProduct.do?page=<%=i%>&menu=<%=request.getParameter("menu")%>&searchCondition=<%=searchCondition%>&searchKeyword=<%=searchKeyword%>"><%=i %></a>
+			<a href="/listSale.do?page=<%=i%>&menu=<%=request.getParameter("menu")%>&searchCondition=<%=searchCondition%>&searchKeyword=<%=searchKeyword%>"><%=i %></a>
 		
 		<%
 			}
 		%>	
+		
     	</td>
 	</tr>
 </table>

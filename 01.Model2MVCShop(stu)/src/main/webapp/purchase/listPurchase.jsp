@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=EUC-KR" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
 
 <%@ page import="java.util.*" %>
 <%@ page import="com.model2.mvc.service.purchase.vo.*" %>
@@ -10,12 +10,15 @@
 	
 	int total=0;
 	ArrayList<PurchaseVO> list=null;
-	
+
 	if(map != null){
 		total=((Integer)map.get("count")).intValue();
 		list=(ArrayList<PurchaseVO>)map.get("list");
+		System.out.println("total : "+total);
+		System.out.println("list :"+list);
+		
 	}
-	System.out.println(list.size());
+	
 	
 	int currentPage = searchVO.getPage();
 	
@@ -31,7 +34,7 @@
 
 <html>
 <head>
-<title>êµ¬ë§¤ ëª©ë¡ì¡°íšŒ</title>
+<title>±¸¸Å ¸ñ·ÏÁ¶È¸</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
@@ -54,7 +57,7 @@
 		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td width="93%" class="ct_ttl01">êµ¬ë§¤ ëª©ë¡ì¡°íšŒ</td>
+					<td width="93%" class="ct_ttl01">±¸¸Å¸ñ·ÏÁ¶È¸</td>
 				</tr>
 			</table>
 		</td>
@@ -64,20 +67,20 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
 	<tr>
-		<td colspan="11">ì „ì²´ <%= total %> ê±´ìˆ˜, í˜„ì¬ <%=currentPage %> í˜ì´ì§€</td>
+		<td colspan="11">ÀüÃ¼ <%= total %> °Ç¼ö, ÇöÀç <%=currentPage %> ÆäÀÌÁö</td>
 	</tr>
 	<tr>
 		<td class="ct_list_b" width="100">No</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">íšŒì›ID</td>
+		<td class="ct_list_b" width="150">È¸¿øID</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="150">íšŒì›ëª…</td>
+		<td class="ct_list_b" width="150">È¸¿ø¸í</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b">ì „í™”ë²ˆí˜¸</td>
+		<td class="ct_list_b">ÀüÈ­¹øÈ£</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b">ë°°ì†¡í˜„í™©</td>
+		<td class="ct_list_b">¹è¼ÛÇöÈ²</td>
 		<td class="ct_line02"></td>
-		<td class="ct_list_b">ì •ë³´ìˆ˜ì •</td>
+		<td class="ct_list_b">Á¤º¸¼öÁ¤</td>
 	</tr>
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
@@ -86,7 +89,8 @@
 		int no=list.size();
 			for(int i=0; i<list.size(); i++) {
 				PurchaseVO purchase = (PurchaseVO)list.get(i);
-				System.out.println("listPurchase.jspì—ì„œ purchase ê°€ì ¸ì˜¤ê¸°"+purchase);
+				System.out.println("listPurchase.jsp¿¡¼­ purchase °¡Á®¿À±â"+purchase);
+			
 	%>
 				
 	<tr class="ct_list_pop">
@@ -103,20 +107,19 @@
 		<td></td>
 		<td align="left">
 			<% if(purchase.getTranCode().trim().equals("1")){ %>
-					í˜„ì¬ êµ¬ë§¤ì™„ë£Œ ìƒíƒœì…ë‹ˆë‹¤.
-					<a href="/updateTranCodeByProd.do?prodNo=?&tranCode=2">ë°°ì†¡í•˜ê¸°</a>
+					ÇöÀç ±¸¸Å¿Ï·á »óÅÂÀÔ´Ï´Ù.
 			<% }else if(purchase.getTranCode().trim().equals("2")){ %>
-					í˜„ì¬ ë°°ì†¡ì¤‘ ìƒíƒœì…ë‹ˆë‹¤.
+					ÇöÀç ¹è¼ÛÁß »óÅÂÀÔ´Ï´Ù.
 			<% }else if(purchase.getTranCode().trim().equals("3")){ %>
-					í˜„ì¬ ë°°ì†¡ì™„ë£Œ ìƒíƒœì…ë‹ˆë‹¤.
+					ÇöÀç ¹è¼Û¿Ï·á »óÅÂÀÔ´Ï´Ù.
 			<% } %>
 		
 		</td>
 		<td></td>	
 		<td align="left">
 				<% if(purchase.getTranCode().trim().equals("2")){ %>
-					<a href="/updateTranCode.do?tranNo=<%purchase.getTranNo() %>&tranCode=3&page=<%=currentPage %>">ë¬¼ê±´ë„ì°©</a>
-				<% } %>
+					<a href="/updateTranCode.do?tranNo=<%=purchase.getTranNo()%>&tranCode=3&page=<%=currentPage %>">¹°°ÇµµÂø</a>
+				<% } %> 
 			</td>
 	</tr>
 
@@ -130,9 +133,9 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
 	<tr>
 		<td align="center">
-		<% for(int i=1;i<=totalPage;i++){ %>
+		<%-- <% for(int i=1;i<=totalPage;i++){ %>
 		
-			<a href="/listPurchase.do?page=<%=i%>&menu=<%=request.getParameter("menu")%>&searchCondition=<%=searchCondition%>&searchKeyword=<%=searchKeyword%>"><%=i %></a>
+			 <a href="/listPurchase.do?page=<%=i%>&menu=<%=request.getParameter("menu")%>&searchCondition=<%=searchCondition%>&searchKeyword=<%=searchKeyword%>"><%=i %></a>
 		
 		<% }%>	
 		
@@ -140,7 +143,7 @@
 	</tr>
 </table>
 
-<%--  í˜ì´ì§€ Navigator ë --%>
+<%--  ÆäÀÌÁö Navigator ³¡ --%>
 </form>
 
 </div>

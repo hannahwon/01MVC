@@ -21,7 +21,7 @@ public class RequestMapping {
 			properties.load(in);
 		}catch(Exception ex){
 			System.out.println(ex);
-			throw new RuntimeException("actionmapping.properties ÆÄÀÏ ·Îµù ½ÇÆĞ :"  + ex);
+			throw new RuntimeException("actionmapping.properties íŒŒì¼ ë¡œë”© ì‹¤íŒ¨ :"  + ex);
 		}finally{
 			if(in != null){
 				try{ in.close(); } catch(Exception ex){}
@@ -51,11 +51,11 @@ public class RequestMapping {
 					map.put(path, (Action)obj);
 					action = (Action)obj;
 				}else{
-					throw new ClassCastException("ClassÇüº¯È¯½Ã ¿À·ù ¹ß»ı  ");
+					throw new ClassCastException("Classí˜•ë³€í™˜ì‹œ ì˜¤ë¥˜ ë°œìƒ ");
 				}
 			}catch(Exception ex){
 				System.out.println(ex);
-				throw new RuntimeException("ActionÁ¤º¸¸¦ ±¸ÇÏ´Â µµÁß ¿À·ù ¹ß»ı : " + ex);
+				throw new RuntimeException("Actionì •ë³´ë¥¼ êµ¬í•˜ëŠ” ë„ì¤‘ ì˜¤ë¥˜ ë°œìƒ : " + ex);
 			}
 		}
 		return action;
