@@ -33,7 +33,7 @@ searchVO.setPageUnit(Integer.parseInt(pageUnit));
 HttpSession session = request.getSession();
 UserVO userVO = (UserVO)session.getAttribute("user");
 
-System.out.println("ListPurchaseAction.jave에서 userVO:"+userVO);
+System.out.println("ListPurchaseAction.java에서 userVO:"+userVO);
 String buyerId = userVO.getUserId();
 
 PurchaseService service=new PurchaseServiceImpl();

@@ -1,8 +1,8 @@
 
-/* ÀÌ¹ÌÁö º¸´õ¶óÀÎ »èÁ¦ */
+/* ì´ë¯¸ì§€ ë³´ë”ë¼ì¸ ì‚­ì œ */
 IMG {  border-style: none}
 
-/* ½ºÅ©·Ñ¹Ù Á¤ÀÇ */
+/* ìŠ¤í¬ë¡¤ë°” ì •ì˜ */
 BODY {
 scrollbar-3dlight-color: #ffffff;
 scrollbar-highlight-color: #ffffff;
@@ -13,21 +13,20 @@ scrollbar-darkshadow-color: #ffffff;
 scrollbar-shadow-color: #B8C4C5;}
 
 
-a.menu		{ font-size: 9pt; font-family: ±¼¸²Ã¼; color: #ff0000; text-decoration: none; }
+a.menu		{ font-size: 9pt; font-family: êµ´ë¦¼ì²´; color: #ff0000; text-decoration: none; }
 
-/* ¸µÅ© ¼Ó¼º */
+/* ë§í¬ ì†ì„± */
 A.:link {  color: #333333 ; text-decoration: none; cursor:hand}
 A.:hover {  color: #347BD9 ;text-decoration: none; }
 A.:active {  color: #347BD9 ; text-decoration: none;}
 A.:visited {  color: #333333 ; text-decoration: none;}
 A.: { onfocus : "this.blur();" }
 
-
-/* ÀüÃ¼ ÅØ½ºÆ® ¼Ó¼º */
+/* ì „ì²´ í…ìŠ¤íŠ¸ ì†ì„± */
 BODY, TABLE, TR, TD, SELECT,INPUT,DIV,SPAN,FORM,TEXTAREA
 { font-family: "MS Gothic"; font-size: 12px; color: #333333; }
 
-/* Å¸ÀÌÆ²1 ¹è°æÀÌ¹ÌÁö¿Í ÅØ½ºÆ® ¼Ó¼º */
+/* íƒ€ì´í‹€1 ë°°ê²½ì´ë¯¸ì§€ì™€ í…ìŠ¤íŠ¸ ì†ì„± */
  .Depth01 { 
 		font-size: 14px; 
 	color: #ffffff;
@@ -38,7 +37,7 @@ BODY, TABLE, TR, TD, SELECT,INPUT,DIV,SPAN,FORM,TEXTAREA
 	background-repeat:no-repeat;
    	}
  
- 	 /* Å¸ÀÌÆ²2 ¹è°æÀÌ¹ÌÁö¿Í ÅØ½ºÆ® ¼Ó¼º - ¸¶¿ì½º ÀÌº¥Æ®°¡ ¾øÀ»¶§¿Í ±âº»ÀÏ¶§.*/
+ 	 /* íƒ€ì´í‹€2 ë°°ê²½ì´ë¯¸ì§€ì™€ í…ìŠ¤íŠ¸ ì†ì„± - ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ê°€ ì—†ì„ë•Œì™€ ê¸°ë³¸ì¼ë•Œ.*/
 	.Depth02on { 
 	font-size: 12px; 
 	line-height: 25px;
@@ -49,7 +48,7 @@ BODY, TABLE, TR, TD, SELECT,INPUT,DIV,SPAN,FORM,TEXTAREA
 	background-repeat:no-repeat;
   	}
   
-   /* Å¸ÀÌÆ²2 ¹è°æÀÌ¹ÌÁö¿Í ÅØ½ºÆ® ¼Ó¼º - ¸¶¿ì½º ÀÌº¥Æ®°¡ ¾øÀ»¶§¿Í ±âº»ÀÏ¶§.*/
+   /* íƒ€ì´í‹€2 ë°°ê²½ì´ë¯¸ì§€ì™€ í…ìŠ¤íŠ¸ ì†ì„± - ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ê°€ ì—†ì„ë•Œì™€ ê¸°ë³¸ì¼ë•Œ.*/
 	.Depth02off { 
 	 font-size: 12px; 
 	line-height: 25px;
@@ -60,7 +59,7 @@ BODY, TABLE, TR, TD, SELECT,INPUT,DIV,SPAN,FORM,TEXTAREA
 	background-repeat:no-repeat;
   	}
 
-/* Å¸ÀÌÆ²3 ¹è°æÀÌ¹ÌÁö¿Í ÅØ½ºÆ® ¼Ó¼º */
+/* íƒ€ì´í‹€3 ë°°ê²½ì´ë¯¸ì§€ì™€ í…ìŠ¤íŠ¸ ì†ì„± */
 	.Depth03 { 
 	font-size: 12px; 
 	line-height: 20px;
@@ -77,9 +76,10 @@ line-height: 5px;
 background-repeat:no-repeat;
 	}
 	
-/* Å¸ÀÌÆ²1 ¹è°æÀÌ¹ÌÁö¿Í ÅØ½ºÆ® ¼Ó¼º */	
+/* íƒ€ì´í‹€1 ë°°ê²½ì´ë¯¸ì§€ì™€ í…ìŠ¤íŠ¸ ì†ì„± */	
 .layer_submenu_bg {
 	background-image:  url(/sample/images/left/menuLayerBg.gif);
 	background-position: right;
 	background-repeat: repeat;
 	text-align: center;
+	}
